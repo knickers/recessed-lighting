@@ -35,7 +35,7 @@ module mount(wall = 0) {
 	y = mount_width + wall*2;
 	cylinder(d=y, h=cone_height);
 	translate([0, -y/2, 0])
-		cube([cone_diameter/2, y, cone_height]);
+		cube([(cone_diameter-mount_separation)/2, y, cone_height]);
 }
 
 module mounts(wall = 0) {
@@ -75,12 +75,19 @@ module body() {
 				cylinder(d1=socket_diameter, d2=cone_diameter, h=cone_height);
 
 			// Trim
-			translate([0, 0, socket_height+cone_height])
-				cylinder(
-					d1=trim_diameter,
-					d2=trim_diameter-wall_double,
-					h=wall_thickness
-				);
+			translate([0, 0, socket_height+cone_height-wall_thickness])
+				difference() {
+					cylinder(
+						d1=trim_diameter+wall_double,
+						d2=trim_diameter-wall_double,
+						h=wall_thickness*2
+					);
+					cylinder(
+						d1=trim_diameter,
+						d2=trim_diameter-wall_double,
+						h=wall_thickness
+					);
+				}
 		}
 
 		// Socket
