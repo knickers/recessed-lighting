@@ -1,7 +1,7 @@
-// Outside diameter
-socket_diameter = 32;
-// Outside height
-socket_height = 22;
+// Inside diameter
+socket_diameter = 28;
+// Inside height
+socket_height = 20;
 
 // Outside diameter
 cone_diameter = 95;
@@ -68,11 +68,15 @@ module body() {
 	difference() {
 		union() {
 			// Socket
-			cylinder(d=socket_diameter, h=socket_height);
+			cylinder(d=socket_diameter+wall_double, h=socket_height+wall_thickness);
 
 			// Cone
 			translate([0, 0, socket_height])
-				cylinder(d1=socket_diameter, d2=cone_diameter, h=cone_height);
+				cylinder(
+					d1=socket_diameter+wall_double,
+					d2=cone_diameter,
+					h=cone_height
+				);
 
 			// Trim
 			translate([0, 0, socket_height+cone_height-wall_thickness])
@@ -92,13 +96,13 @@ module body() {
 
 		// Socket
 		translate([0, 0, wall_thickness])
-			cylinder(d=socket_diameter-wall_double, h=socket_height+1);
+			cylinder(d=socket_diameter, h=socket_height+1);
 
 		// Cone
 		translate([0, 0, socket_height+wall_thickness])
 			difference() {
 				cylinder(
-					d1=socket_diameter-wall_double,
+					d1=socket_diameter,
 					d2=cone_diameter-wall_double,
 					h=cone_height
 				);
